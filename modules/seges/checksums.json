@@ -1,0 +1,22 @@
+{
+  "Gemfile": "1690d72fce57c48e403368d6fc089038",
+  "README.md": "f188d6334d80c3a403e9d0d2abfd758e",
+  "Rakefile": "3044cde52b8cd8508c8400076a66ef11",
+  "manifests/check_mk_agent.pp": "0974017b7c7ffdb85ff51b0e2c0e1426",
+  "manifests/configs.pp": "9a2ee27d7245f82764c1adaffdf7a14c",
+  "manifests/dellopenmanager.pp": "064776a136910589e42925389c73cea3",
+  "manifests/epelrepo.pp": "c3e899bc01b05343618612289b4e1f63",
+  "manifests/fusioninventory_agent.pp": "5fd41a04fd27278812b93da0f183d589",
+  "manifests/init.pp": "3d3f45bebc3e38f3c5af1bd08f668570",
+  "manifests/libvirt.pp": "3d65ef308fde7fc05731050375db5f2c",
+  "manifests/packages.pp": "9a0b04661339a4ac55b338ad7e0c559b",
+  "manifests/params.pp": "18d964ef907e8a4d180d56d61902db91",
+  "manifests/services.pp": "278030f984da9add344e24e39865be3e",
+  "manifests/users.pp": "c417a43fdc11ca38a76626e495d9ae91",
+  "metadata.json": "57ff83a3d78a2a58b423b5f10bdff8c9",
+  "spec/classes/init_spec.rb": "ef712f2330afc1a87d8c8adb366259b5",
+  "spec/spec_helper.rb": "0db89c9a486df193c0e40095422e19dc",
+  "templates/ntp.conf.erb": "f70f7acb4521a3ce79b97761ef22619e",
+  "templates/pam_ldap.conf.erb": "57826ebcda2eedf50706833cc7415948",
+  "tests/init.pp": "0c13c9c991051a581aa8d6880d19f815"
+}
