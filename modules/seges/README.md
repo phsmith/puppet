@@ -42,23 +42,23 @@ Necessário instalar, no cliente, o agente do puppet da seguinte forma:
 
 O servidor do puppet já possui uma configuração padrão caso nenhuma configuração de nó específica seja adicionada em /etc/puppetlabs/puppet/code/environment/production/manifests/nodes.
 
- node 'default' {
-   class { 'seges':
-     basic_install => true,
-   }
- }
+  node 'default' {
+    class { 'seges':
+      basic_install => true,
+    }
+  }
 
 Exemplo de configuração de nó específico:
  
- /etc/puppetlabs/puppet/code/environment/production/manifests/nodes/teste1.pp
+  /etc/puppetlabs/puppet/code/environment/production/manifests/nodes/teste1.pp
 
- node 'teste1' {
-   class { 'seges':
-     is_hypervisor => true,
-     basic_install => true,
-     users         => [ 'user1', 'user2', 'user3' ],
-   }
- }
+  node 'teste1' {
+    class { 'seges':
+      is_hypervisor => true,
+      basic_install => true,
+      users         => [ 'user1', 'user2', 'user3' ],
+    }
+  }
 
 ## Referências
 
@@ -89,11 +89,11 @@ Classe para instalação e configuração do repositório EPEL nos servidores Ce
 
 #### Função: seges::epelrepo
 
- seges::epelrepo {'epel-release':
-   ensure => installed,
-   enable => true,
-   source => 'http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm'
- }
+  seges::epelrepo {'epel-release':
+    ensure => installed,
+    enable => true,
+    source => 'http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm'
+  }
 
 ### fusioninventory_agent.pp
 
@@ -101,13 +101,13 @@ Classe para instalação e configuração do agente de inventário para o GLPI
 
 #### Classe: seges::fusioninventory_agent
 
- include seges::fusioninventory_agent
+  include seges::fusioninventory_agent
 
 Ou
 
- seges::fusioninventory_agent {
-   server => 'http://corsa.redecamara.camara.gov.br/glpi/plugins/fusioninventory/'
- }
+  seges::fusioninventory_agent {
+    server => 'http://corsa.redecamara.camara.gov.br/glpi/plugins/fusioninventory/'
+  }
 
 ### libvirt.pp
 
@@ -115,7 +115,7 @@ Classe para instalação e configuração de servidores de virtualização KVM
 
 #### Classe: seges::libvirt
 
- include seges::libvirt
+  include seges::libvirt
 
 ### packages.pp
 
@@ -123,14 +123,14 @@ Clase responsável pela instalação dos pacotes no sistema
 
 #### Classe: seges::packages
 
- include seges::packages
+  include seges::packages
 
 OU
 
- seges::packages {
-   packages_list   => [ 'git', 'httpd', 'mysql-server' ], 
-   install_options => '--disablerepo=epel'    
- }
+  seges::packages {
+    packages_list   => [ 'git', 'httpd', 'mysql-server' ], 
+    install_options => '--disablerepo=epel'    
+  }
  
 ## Limitações
 
