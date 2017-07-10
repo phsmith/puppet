@@ -1,3 +1,4 @@
+# Seges LDAP auth puppet class
 class seges::ldap {
 
   case $::operatingsystem {
@@ -7,27 +8,26 @@ class seges::ldap {
         'openssh-ldap',
         'pam_ldap',
       ]
-   
+
       if $::operatingsystemmajrelease == '7' {
         file { '/etc/nslcd.conf':
-          ensure  => file,
-          owner   => 'root',
-          group   => 'root',
-          mode    => '600',
-          source  => "puppet:///modules/$module_name/nslcd.conf",
+          ensure => file,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0600',
+          source => "puppet:///modules/${module_name}/nslcd.conf",
         }
-        
       }
       else {
         file { '/etc/pam_ldap.conf':
-          ensure  => file,
-          owner   => 'root',
-          group   => 'root',
-          mode    => '644',
-          source  => "puppet:///modules/$module_name/pam_ldap.conf",
+          ensure => file,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0644',
+          source => "puppet:///modules/${module_name}/pam_ldap.conf",
         }
       }
-  
+
       service { 'nslcd':
         ensure     => running,
         enable     => false,
@@ -42,13 +42,13 @@ class seges::ldap {
         'libnss-ldap',
         'libpam-ldap',
       ]
-      
+
       file { '/etc/ldap.conf':
         ensure  => file,
         owner   => 'root',
         group   => 'root',
-        mode    => '644',
-        content => "puppet:///modules/$module_name/pam_ldap.conf",
+        mode    => '0644',
+        content => "puppet:///modules/${module_name}/pam_ldap.conf",
       }
     }
     default: {}

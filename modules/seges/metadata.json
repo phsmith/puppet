@@ -1,12 +1,15 @@
 {
-  "name": "puppet-seges",
+  "name": "phsmith-seges",
   "version": "0.1.0",
-  "author": "Phillipe Smith",
+  "author": "Phillipe Smith <phillipelnx@gmail.com>",
   "summary": "SEGES Puppet Module",
   "license": "Apache-2.0",
-  "source": "",
-  "project_page": null,
-  "issues_url": null,
-  "dependencies": [],
+  "source": "https://github.com/phsmith/puppet/modules/seges",
+  "project_page": "https://github.com/phsmith/puppet/modules/seges",
+  "issues_url": "https://github.com/phsmith/puppet/modules/seges/issues",
+  "dependencies": [
+    { "name": "fusioninventory_agent", "version_requirement": ">=0.1.0 < 1.0.0" },
+    { "name": "stahnma-epel", "version_requirement": ">= 1.2.2 < 8.0.0" }
+  ],
   "data_provider": null
 }

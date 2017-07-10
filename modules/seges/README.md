@@ -3,14 +3,14 @@
 #### Tabela de conteúdos
 
 1. [Descrição](#descricao)
-1. [Configuração - O básico para iniciar com seges](#configuracao)
+1. [Configuração - o básico para iniciar com seges](#configuracao)
     * [O que seges afeta](#o-que-seges-afeta)
     * [Requisitos de configuração](#requisitos-de-configuracao)
     * [Iniciando com seges](#inciando-com-seges)
 1. [Utilização - Opções de configuração e funcionalidades adicionais](#utilizacao)
-1. [Referências - Referências das classes de definições do módulo](#referencias)
-1. [Limitações - Compatibilidade de SO, etc.](#limitacoes)
-1. [Desenvolvimento - Guia para contribuir com o desenvolvimento do módulo](#desenvolvimento)
+1. [Referências - referências das classes de definições do módulo](#referencias)
+1. [Limitations - OS compatibility, etc.](#limitations)
+1. [Development - Guide for contributing to the module](#development)
 
 ## Descrição
 
@@ -42,25 +42,23 @@ Necessário instalar, no cliente, o agente do puppet da seguinte forma:
 
 O servidor do puppet já possui uma configuração padrão caso nenhuma configuração de nó específica seja adicionada em /etc/puppetlabs/puppet/code/environment/production/manifests/nodes.
 
-```
-  node 'default' {
-    class { 'seges':
-      basic_install => true,
-    }
-  }
-```
+ node 'default' {
+   class { 'seges':
+     basic_install => true,
+   }
+ }
+
 Exemplo de configuração de nó específico:
  
-```
-  /etc/puppetlabs/puppet/code/environment/production/manifests/nodes/teste1.pp
+ /etc/puppetlabs/puppet/code/environment/production/manifests/nodes/teste1.pp
 
-  node 'teste1' {
-    class { 'seges':
-      basic_install => true,
-      users         => [ 'user1', 'user2', 'user3' ],
-    }
-  }
-```
+ node 'teste1' {
+   class { 'seges':
+     is_hypervisor => true,
+     basic_install => true,
+     users         => [ 'user1', 'user2', 'user3' ],
+   }
+ }
 
 ## Referências
 
@@ -91,13 +89,11 @@ Classe para instalação e configuração do repositório EPEL nos servidores Ce
 
 #### Função: seges::epelrepo
 
-```
-  seges::epelrepo {'epel-release':
-    ensure => installed,
-    enable => true,
-    source => 'http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm'
-  }
-```
+ seges::epelrepo {'epel-release':
+   ensure => installed,
+   enable => true,
+   source => 'http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm'
+ }
 
 ### fusioninventory_agent.pp
 
@@ -105,17 +101,13 @@ Classe para instalação e configuração do agente de inventário para o GLPI
 
 #### Classe: seges::fusioninventory_agent
 
-```
-  include seges::fusioninventory_agent
-```
+ include seges::fusioninventory_agent
 
 Ou
 
-```
-  seges::fusioninventory_agent {
-    server => 'http://corsa.redecamara.camara.gov.br/glpi/plugins/fusioninventory/'
-  }
-```
+ seges::fusioninventory_agent {
+   server => 'http://corsa.redecamara.camara.gov.br/glpi/plugins/fusioninventory/'
+ }
 
 ### libvirt.pp
 
@@ -123,7 +115,7 @@ Classe para instalação e configuração de servidores de virtualização KVM
 
 #### Classe: seges::libvirt
 
-  include seges::libvirt
+ include seges::libvirt
 
 ### packages.pp
 
@@ -131,22 +123,27 @@ Clase responsável pela instalação dos pacotes no sistema
 
 #### Classe: seges::packages
 
-```
-  include seges::packages
-```
+ include seges::packages
 
 OU
 
-```
-  seges::packages {
-    packages_list   => [ 'git', 'httpd', 'mysql-server' ], 
-    install_options => '--disablerepo=epel'    
-  }
-```
+ seges::packages {
+   packages_list   => [ 'git', 'httpd', 'mysql-server' ], 
+   install_options => '--disablerepo=epel'    
+ }
  
-## Limitações
+## Limitations
 
-  That module was designed mostly for use with CentOS 6 and 7
-  but can be extended to other OSes too.
+This is where you list OS compatibility, version compatibility, etc. If there
+are Known Issues, you might want to include them under their own heading here.
 
-## Desenvolvimento
+## Development
+
+Since your module is awesome, other users will want to play with it. Let them
+know what the ground rules for contributing are.
+
+## Release Notes/Contributors/Etc. **Optional**
+
+If you aren't using changelog, put your release notes here (though you should
+consider using changelog). You can also add any additional sections you feel
+are necessary or important to include here. Please use the `## ` header.

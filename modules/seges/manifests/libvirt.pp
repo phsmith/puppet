@@ -1,3 +1,4 @@
+# Seges libvirt puppet class
 class seges::libvirt {
 
   package { 'libvirt':
@@ -19,7 +20,7 @@ class seges::libvirt {
       timeout => 600 ,
     }
   }
-  
+
   exec { 'echo ""; echo "seges" | saslpasswd2 -a libvirt seges':
     path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
     unless  => ['test -f /etc/libvirt/passwd.db', 'sasldblistusers2 -f /etc/libvirt/passwd.db | grep seges 2> /dev/null'],
@@ -27,8 +28,8 @@ class seges::libvirt {
   }
 
   exec { 'sed -r -i "s/^#(listen_(tls|tcp))/\1/g" /etc/libvirt/libvirtd.conf':
-    path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
-    onlyif  => ['grep -E "^#listen_(tls|tcp)" /etc/libvirt/libvirtd.conf'],
+    path   => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+    onlyif => ['grep -E "^#listen_(tls|tcp)" /etc/libvirt/libvirtd.conf'],
   }
 
   augeas { 'sysconfig-libvirtd':
@@ -44,7 +45,7 @@ class seges::libvirt {
       'set listen_tcp 1',
     ],
     notify  => Service['libvirtd'],
-  } 
+  }
 
   service { 'libvirtd':
     ensure     => running,

@@ -1,0 +1,15 @@
+{
+  "name": "phsmith-fusioninventory_agent",
+  "version": "0.1.1",
+  "author": "Phillipe Smith <phillipelnx@gmail.com>",
+  "summary": "Module to install fusioninventory agent on RHEL/CentOS and Debian/Ubuntu systems",
+  "license": "GPL-2.0",
+  "source": "https://github.com/phsmith/puppet/modules/fusioninventory_agent",
+  "project_page": "https://github.com/phsmith/puppet/modules/fusioninventory_agent",
+  "issues_url": "https://github.com/phsmith/puppet/modules/fusioninventory_agent/issues",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0 < 8.0.0"},
+    {"name":"stahnma-epel","version_requirement":">= 1.2.2 < 8.0.0"}
+  ],
+  "data_provider": null
+}

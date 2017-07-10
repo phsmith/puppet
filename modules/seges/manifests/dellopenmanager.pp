@@ -1,3 +1,4 @@
+# DellOpenmanager puppet class
 class seges::dellopenmanager {
 
   file { '/etc/yum.repos.d/dell-omsa-repository.repo':
@@ -14,7 +15,7 @@ class seges::dellopenmanager {
   package { ['net-snmp', 'OpenIPMI', 'srvadmin-all', 'dell-system-update']:
     ensure => 'installed',
   }
-  
+
   #package { 'invcol_WF06C_LN64_16.12.200.896_A00-16.12.200.896-WF06C.x86_64.rpm':
   #  ensure          => installed,
   #  provider        => 'rpm',
@@ -32,8 +33,8 @@ class seges::dellopenmanager {
     ensure => file,
     owner  => 'root',
     group  => 'root',
-    mode   => '644',
-    source => "puppet:///modules/$module_name/snmpd.conf"
+    mode   => '0644',
+    source => "puppet:///modules/${module_name}/snmpd.conf"
   }
 
   service { ['snmpd', 'ipmi', 'dataeng']:

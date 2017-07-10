@@ -1,4 +1,5 @@
-class seges::users ( 
+# Seges users puppet class
+class seges::users (
     $users      = $seges::params::users,
     $ensure     = $seges::params::users_ensure,
     $managehome = $seges::params::users_managehome,

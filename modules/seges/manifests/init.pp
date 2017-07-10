@@ -61,18 +61,13 @@ class seges (
   if $basic_install {
     include seges::configs
     include seges::services
-    include seges::check_mk_agent::install
+    include fusioninventory_agent
+    include check_mk_agent
 
-    if $users != $seges::params::users {
-      class { 'seges::users':
-        users => $users << $seges::params::users
-      }
-    } 
-    else {
-      class { 'seges::users':
-        users => $users
-      }
+    class {'seges::users':
+      users => $users,
     }
+    include seges::users
 
     if $packages_list != $seges::params::packages_list {
       $_packages_list = $seges::params::packages_list << $packages_list
@@ -80,16 +75,12 @@ class seges (
     else {
       $_packages_list = $seges::params::packages_list
     }
-    
-    class { 'seges::packages': 
+
+    class { 'seges::packages':
       packages_list   => $_packages_list,
       install_options => $packages_install_options,
     }
-    
-    class { 'seges::fusioninventory_agent':
-      server => $fusioninventory_server,
-    }
-    
+
     if $check_mk_agent_plugins != $seges::params::check_mk_agent_plugins {
       $_check_mk_agent_plugins = $seges::params::check_mk_agent_plugins << $check_mk_agent_plugins
     }
@@ -97,7 +88,7 @@ class seges (
       $_check_mk_agent_plugins = $check_mk_agent_plugins
     }
 
-    seges::check_mk_agent::plugins { 'check_mk_plugins':
+    check_mk_agent::plugins { 'check_mk_plugins':
       plugins => $check_mk_agent_plugins
     }
   }
@@ -108,9 +99,9 @@ class seges (
     Class[::seges] -> Class[::seges::dellopenmanager]
   }
 
-  Class[::seges::packages] -> 
-  Class[::seges::configs] -> 
-  Class[::seges::users] -> 
+  Class[::seges::packages] ->
+  Class[::seges::configs] ->
+  Class[::seges::users] ->
   Class[::seges::services] ->
   Class[::seges]
 }

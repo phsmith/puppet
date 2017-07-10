@@ -1,3 +1,4 @@
+# RPMForge puppet class
 define seges::rpmforgerepo (
   $ensure = 'installed',
   $enable = false,
@@ -15,5 +16,4 @@ define seges::rpmforgerepo (
     enabled => 0,
     require => Package[$name],
   }
-  
 }
