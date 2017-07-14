@@ -1,49 +1,54 @@
-# check_agent
+# check_mk_agent
 
-#### Indice
+#### Table of Contents
 
-1. Descrição
-2. Instalação
-3. Funcionabilidade do check_agent
-4. Requerimentos de instalação
-5. Iniciando com check_agent
-6. Desenvolvimento e contribuição
+1. [Description](#description)
+2. [Setup - The basics of getting started with check_mk_agent](#setup)
+    * [Beginning with check_mk_agent](#beginning-with-check_mk_agent)
+3. [Usage - Configuration options and additional functionality](#usage)
+4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 
-## Descrição
+## Description
 
-Módulo check_agent homologado na versão do Puppet v4.9.4, escrito e desenvolvido para funcionar na versão 4.x.x.
+Module to manage Check_MK agent installation on RedHat/CentOS and 
+Debian/Ubuntu based distribuitions.
 
-## Instalação
+## Setup
 
-* Para instalar o módulo, basta copiar arquivos para a pasta:
-* /etc/puppetlabs/code/environments/production/modules/check_agent
-* Para verificar se o mesmo foi instalado corretamente digite o comando:
-* puppet module list
-* Verifique se aparece como parte do resultado: "seges-check_mk_agent (v0.1.1)"
+* Execute the following commando to install the module:
+** puppet module install check_mk_agent-0.1.0.tar.gz
 
-### Funcionabilidade do check_agent
+### Beginning with check_mk_agent
 
-O módulo agente do check_agent serve para coletar dados referente a monitoramento de servidores GNU\Linux, derivados de Debian e Red Hat e enviar as informações para o Nagios\Check_mk
+To start using seges-check_mk_agent module just do the following:
 
-### Requerimentos de instalação
+include ::check_mk_agent
 
-Os requirementos para seu funcionando é sistemas derivados do Debian e RedHat.
+OR
 
-### Iniciando com check_agent
+class { 'check_mk_agent': }
 
-Para utiliza-los basta inserir os seguintes dados no node:
+## Usage
 
-node "nome" {
-  include check_mk_agent
+The module accepts some parameters like install additional plugins for Check_MK agent:
+
+class { '::check_mk_agent':
+  plugins => [ 'lvm', 'mk_logins', 'mk_logwatch' ],
 }
 
-ou
+## Reference
 
-class { 'check_mk_agent': 
-  noproxy => true,
-}
+### Parameters
 
-## Desenvolvimento e contribuição
+* `version`
+Check_MK agent version to be installed.
+Defaults to version 1.2.6p12.
 
-Criado por Phillipe Smith Carvalho Chaves (Seges)
-Customizado por Luiz Guilherme Nunes Fernandes (Seges)
+* `plugins`
+A list of Check_MK agent plugins to be installed
+
+* `plugins_source`
+Source url for downloading Check_MK agent plugins
+
+* `agent_source`
+Source url for downloading Check_MK agent

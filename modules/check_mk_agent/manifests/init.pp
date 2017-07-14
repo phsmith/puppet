@@ -38,8 +38,7 @@
 #
 # Copyright 2017 Phillipe Smith.
 #
-
-class check_mk_agent(
+class check_mk_agent (
   String $version         = '1.2.6p12-1',
   Array[String] $plugins  = [],
   String $agent_source    = 'http://monitoramento.camara.leg.br/nagios/check_mk/agents',
@@ -50,22 +49,22 @@ class check_mk_agent(
     default  => '',
   }
 ) {
-
   # Workaround to ignore proxy environment settings
   if $noproxy {
     exec { '/bin/bash -c "export no_proxy=monitoramento.camara.leg.br"':
       onlyif => '/usr/bin/test ! -e /usr/bin/check_mk_agent',
+      before => Package['check-mk-agent'],
     }
   }
 
-  class { '::check_mk_agent::install':
+  class { 'check_mk_agent::install':
     version => $version,
     source  => $agent_source,
     options => $install_options,
   }
 
   if $plugins {
-    class { '::check_mk_agent::plugins':
+    class { 'check_mk_agent::plugins':
       plugins => $plugins,
       source  => $plugins_source,
     }

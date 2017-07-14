@@ -1,4 +1,8 @@
-# Instalação dos plugins do Check_mk
+# Class: check_mk_agent::plugins
+# ===========================
+#
+# Manages Check_MK Agent plugins
+#
 class check_mk_agent::plugins ($plugins, $source) {
   if $plugins {
     $plugins.each | $plugin | {

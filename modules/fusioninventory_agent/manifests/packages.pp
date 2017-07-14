@@ -26,7 +26,7 @@ class fusioninventory_agent::packages {
   }
 
   package { 'fusioninventory-agent':
-    ensure => latest,
+    ensure => installed,
     name   => 'fusioninventory-agent*',
   }
 }

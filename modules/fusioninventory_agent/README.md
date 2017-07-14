@@ -1,48 +1,44 @@
 # fusioninventory
 
-#### Indice
+#### Table of Contents
 
-1. Descrição
-2. Instalação
-3. Funcionabilidade do fusioninventory
-4. Requerimentos de instalação
-5. Iniciando com fusioninventory
-6. Desenvolvimento e contribuição
+1. [Description](#description)
+2. [Setup - The basics of getting started with fusioninventory](#setup)
+    * [Beginning with fusioninventory](#beginning-with-fusioninventory)
+3. [Usage - Configuration options and additional functionality](#usage)
+4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 
-## Descrição
+## Description
 
-Módulo Fusion inventory homologado na versão do Puppet v4.9.4, escrito e desenvolvido para funcionar na versão 4.x.x.
+Module to manage Fusioninventory Agent installation on RedHat/CentOS and
+Debian/Ubuntu based distribuitions.
 
-## Instalação
+## Setup
 
-* Para instalar o módulo, basta copiar arquivos para a pasta:
-* /etc/puppetlabs/code/environments/production/modules/fusioninventory
-* Para verificar se o mesmo foi instalado corretamente digite o comando:
-* puppet module list
-* Verifique se aparece como parte do resultado: "seges-fusioninventory v0.1.1)"
+* Execute the following commando to install the module:
+** puppet module install fusioninventory_agent-0.1.0.tar.gz
 
-### Funcionabilidade do fusioninventory
+### Beginning with fusioninventory_agent
 
-O módulo agente do fusioninventory serve para inventariar os servidores GNU\Linux, derivados de Debian e Red Hat e enviar as informações para o GLPI
+To start using seges-fusioninventory_agent module just do the following:
 
-### Requerimentos de instalação
+include ::fusioninventory_agent
 
-Os requirementos para seu funcionando é sistemas derivados do Debian e Centos.
+OR
 
-### Iniciando com fusioninventory
+class { 'fusioninventory_agent': }
 
-Para utiliza-los basta inserir os seguintes dados no node:
+## Usage
 
-node "nome" {
-  include fusioninventory
+The module accepts some parameters like install additional plugins for Check_MK agent:
+
+class { '::fusioninventory_agent':
+  server => 'http://localhost/glpi/plugins/fusioninventory/',
 }
 
-ou
+## Reference
 
-class { "fusioninventory":
-  server => 'http://localhost/glpi/plugins/fusioninventory' 
-}
+### Parameters
 
-## Desenvolvimento e contribuição
-
-Criado por Phillipe Smith Carvalho Chaves <phillipe.chaves@camara.leg.br>
+* `server`
+Specify the fusioninventory_agent server 
