@@ -1,4 +1,8 @@
-# Configurações do agente do Fusion Inventory
+# Class: fusioninventory_agent::config
+# =====================================
+#
+# Class to manage fusioninventory-agent configuration file
+#
 class fusioninventory_agent::config {
   file { '/etc/fusioninventory/agent.cfg':
     ensure  => file,

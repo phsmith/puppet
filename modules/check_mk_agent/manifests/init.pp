@@ -1,7 +1,7 @@
 # Class: check_mk_agent
 # ===========================
 #
-# This module manages the installation of Check_MK Agent and Plugins 
+# This module manages the installation of Check_MK Agent and Plugins
 #
 # Parameters
 # ----------
@@ -39,13 +39,13 @@
 # Copyright 2017 Phillipe Smith.
 #
 class check_mk_agent (
-  String $version         = '1.2.6p12-1',
+  String $version         = '1.2.6p12',
   Array[String] $plugins  = [],
   String $agent_source    = 'http://monitoramento.camara.leg.br/nagios/check_mk/agents',
   String $plugins_source  = 'http://10.1.3.113/repositorio/nagios/check_mk/plugins/linux',
   Boolean $noproxy        = false,
   Variant[String, Array[String]] $install_options = $::osfamily ? {
-    'RedHat' =>  '-Uvh',
+    'RedHat' =>  '-U',
     default  => '',
   }
 ) {
@@ -63,7 +63,7 @@ class check_mk_agent (
     options => $install_options,
   }
 
-  if $plugins {
+  if $plugins and $::osfamily != 'Windows' {
     class { 'check_mk_agent::plugins':
       plugins => $plugins,
       source  => $plugins_source,

@@ -1,4 +1,8 @@
-# Serviço do fusion inventory
+# Class: fusioninventory_agent::services
+# =======================================
+#
+# Class to manage fusioninventory-agent service
+#
 class fusioninventory_agent::services {
   service { 'fusioninventory-agent':
     ensure     => running,

@@ -11,7 +11,7 @@
 # send tasks results to an OCS server
 #server = http://server.domain.com/ocsinventory
 # send tasks results to a FusionInventory for GLPI server
-server='<%= scope.lookupvar("fusioninventory::server") %>'
+server = '<%= scope.lookupvar("fusioninventory_agent::server") %>'
 # write tasks results in a directory
 #local = /tmp
 
@@ -110,7 +110,7 @@ color = 0
 #
 
 # add given tag to inventory results
-tag = 
+tag = '<%= scope.lookupvar("fusioninventory_agent::agent_tag") %>'
 # debug mode
 debug = 0
 
