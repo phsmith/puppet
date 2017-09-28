@@ -1,4 +1,8 @@
-# Seges LDAP auth puppet class
+# Class: seges::ldap
+# ===========================
+#
+# Class to manage ldap authentication
+#
 class seges::ldap {
 
   case $::operatingsystem {

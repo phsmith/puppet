@@ -1,7 +1,7 @@
 # Class: seges
 # ===========================
 #
-# Class to manage SEGES infraestructure  
+# Class to manage SEGES infraestructure
 #
 # Parameters
 # ----------
@@ -10,7 +10,7 @@
 # Set it equal to true if you want to made the basic system installation and configuration.
 # Install some useful packages to the system, epel repository on CentOS system,
 # config ldap authentication, install check_mk and fusioninventory agents
-# 
+#
 # [*packages_list*]
 # A list of packages to be installed on the system
 #
@@ -20,14 +20,20 @@
 # [*users*]
 # A user, or list of users, to be created on the system
 #
-# [*fusioninventory_server*]
+# [*fusioninventory_agent_server*]
 # Url for GLPI/Fusioninventory server
+#
+# [*fusioninventory_agent_tag*]
+# Custom tag for fusioninventory agent
 #
 # [*check_mk_agent_version*]
 # The check_mk_agent version to be installed
 #
 # [*check_mk_agent_plugins*]
 # Aditional check_mk_agent plugins
+#
+# [*check_mk_agent_plugins_source*]
+# Source url to download check_mk_agent plugins
 #
 # Examples
 # --------
@@ -49,31 +55,40 @@
 # Copyright 2016 Câmara dos Deputados - CAINF/SEGES.
 #
 class seges (
-  Boolean $basic_install                        = $seges::params::basic_install,
-  Array[String] $packages_install_options       = $seges::params::packages_install_options,
-  Variant[Undef, Array[String]] $packages_list  = $seges::params::packages_list,
-  Variant[Undef, String, Array[String]] $users  = $seges::params::users,
-  String $fusioninventory_server                = $seges::params::fusioninventory_server,
-  String $check_mk_agent_version                = $seges::params::check_mk_agent_version,
-  Array[String] $check_mk_agent_plugins         = $seges::params::check_mk_agent_plugins,
-) inherits seges::params {
+  Boolean $basic_install,
+  String $fusioninventory_agent_server,
+  String $fusioninventory_agent_tag,
+  String $check_mk_agent_version,
+  String $check_mk_agent_plugins_source,
+  Array[String] $check_mk_agent_plugins,
+  Array[String] $packages_install_options       = lookup('seges::packages::install_options'),
+  Variant[Undef, Array[String]] $packages_list  = lookup('seges::packages::packages_list'),
+  Variant[Undef, String, Array[String]] $users  = lookup('seges::users::login'),
+) {
 
   if $basic_install {
-    include seges::configs
-    include seges::services
-    include fusioninventory_agent
-    include check_mk_agent
+    $default_packages_list          = lookup('seges::packages::packages_list')
+    $default_check_mk_agent_plugins = lookup('seges::check_mk_agent_plugins')
 
-    class {'seges::users':
-      users => $users,
-    }
-    include seges::users
-
-    if $packages_list != $seges::params::packages_list {
-      $_packages_list = $seges::params::packages_list << $packages_list
+    if $packages_list != $default_packages_list {
+      $_packages_list = concat($default_packages_list, $packages_list)
     }
     else {
-      $_packages_list = $seges::params::packages_list
+      $_packages_list = $packages_list
+    }
+
+    if $check_mk_agent_plugins != $default_check_mk_agent_plugins {
+      $_check_mk_agent_plugins = concat($default_check_mk_agent_plugins, $check_mk_agent_plugins)
+    }
+    else {
+      $_check_mk_agent_plugins = $check_mk_agent_plugins
+    }
+
+    include seges::configs
+    include seges::services
+
+    class {'seges::users':
+      login => $users,
     }
 
     class { 'seges::packages':
@@ -81,15 +96,13 @@ class seges (
       install_options => $packages_install_options,
     }
 
-    if $check_mk_agent_plugins != $seges::params::check_mk_agent_plugins {
-      $_check_mk_agent_plugins = $seges::params::check_mk_agent_plugins << $check_mk_agent_plugins
-    }
-    else {
-      $_check_mk_agent_plugins = $check_mk_agent_plugins
+    class { '::check_mk_agent':
+      plugins => $_check_mk_agent_plugins,
     }
 
-    check_mk_agent::plugins { 'check_mk_plugins':
-      plugins => $check_mk_agent_plugins
+    class { '::fusioninventory_agent':
+      agent_tag => $fusioninventory_agent_tag,
+      server    => $fusioninventory_agent_server,
     }
   }
 
@@ -99,9 +112,8 @@ class seges (
     Class[::seges] -> Class[::seges::dellopenmanager]
   }
 
-  Class[::seges::packages] ->
-  Class[::seges::configs] ->
-  Class[::seges::users] ->
-  Class[::seges::services] ->
-  Class[::seges]
+  Class[::seges::packages]
+  -> Class[::seges::configs]
+  -> Class[::seges::services]
+  -> Class[::seges::users]
 }

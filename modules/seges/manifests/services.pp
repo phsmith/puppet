@@ -1,54 +1,40 @@
-# Seges services puppet class
-class seges::services {
+# Class: seges::services
+# ===========================
+#
+# Class to manage seges modules services
+#
+class seges::services($args) {
 
   if $::osfamily == 'RedHat'{
-    if $::operatingsystemmajrelease == '7' {
-      $ensure_nslcd     = running
-      $firewall_service = 'firewalld'
-      $ntp_service      = 'chronyd'
-      $ntp_package      = 'chrony'
-    }
-    else {
-      $ensure_nslcd     = stopped
-      $firewall_service = 'iptables'
-      $ntp_service      = 'ntpd'
-      $ntp_package      = 'ntp'
-    }
-
-    service { 'nslcd':
-      ensure     => $ensure_nslcd,
-      enable     => false,
-      hasstatus  => true,
-      hasrestart => true,
-    }
-
     exec { 'authconfig-ldap':
       path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
-      command => '/usr/sbin/authconfig --update --enableldap --enableldapauth --enableforcelegacy \
-        --ldapserver=dirsrvc.camara.gov.br --ldapbasedn=ou=usuarios,dc=redecamara,dc=camara,dc=gov,dc=br --updateall',
-      unless  => ['grep "FORCELEGACY=yes" /etc/sysconfig/authconfig'],
+      command => 'authconfig --enablemkhomedir --disableldap --disableldapauth --enablesssd \
+        --enablesssdauth --disableforcelegacy --ldapserver=dirsrvc.camara.gov.br \
+        --ldapbasedn=ou=usuarios,dc=redecamara,dc=camara,dc=gov,dc=br --updateall',
+      onlyif  => ['grep -E "(USESSSDAUTH=no|FORCELEGACY=yes)" /etc/sysconfig/authconfig'],
     }
   }
-  else {
-    $firewall_service = undef
-    $ntp_service      = 'ntp'
-    $ntp_package      = 'ntp'
-  }
 
-  service { $ntp_service:
+  service { 'sssd':
     ensure     => running,
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
-    require    => Package[$ntp_package],
+    require    => Package['sssd'],
   }
 
-  if $firewall_service {
-    service { $firewall_service:
-      ensure     => stopped,
-      enable     => false,
-      hasstatus  => true,
-      hasrestart => true,
-    }
+  service { $args['ntp_service']:
+    ensure     => running,
+    enable     => true,
+    hasstatus  => true,
+    hasrestart => true,
+    require    => Package[$args['ntp_package']],
+  }
+
+  service { $args['firewall_service']:
+    ensure     => stopped,
+    enable     => false,
+    hasstatus  => true,
+    hasrestart => true,
   }
 }

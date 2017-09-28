@@ -1,33 +1,54 @@
-# Seges users puppet class
+# Class: seges::users
+# ===========================
+#
+# Class to manage system users
+#
 class seges::users (
-    $users      = $seges::params::users,
-    $ensure     = $seges::params::users_ensure,
-    $managehome = $seges::params::users_managehome,
-    $groups     = $seges::params::users_groups,
-) inherits seges::params {
+    $login,
+    $ensure,
+    $managehome,
+    $groups,
+) {
 
-  group { 'seges':
+  group { 'gestic':
     ensure => present,
+    gid    => '1995400513',
   }
 
-  if $users {
-    user { $users:
-      ensure     => $ensure,
-      groups     => $groups,
-      managehome => $managehome,
-      require    => Group['seges'],
-    }
+  file { '/etc/sudoers.d/seges':
+    ensure  => present,
+    content => '%seges ALL = (ALL) NOPASSWD: ALL',
   }
 
-  augeas { 'sudoseges':
-    context => '/files/etc/sudoers',
-    changes => [
-      'set spec[user = "%seges"]/user %seges',
-      'set spec[user = "%seges"]/host_group/host ALL',
-      'set spec[user = "%seges"]/host_group/command ALL',
-      'set spec[user = "%seges"]/host_group/command/runas_user ALL',
-      'set spec[user = "%seges"]/host_group/command/tag NOPASSWD',
-    ],
-  }
+  #if $login {
+  #  $login.each | $user | {
+  #    exec { "userdel $user":
+  #      command => "/usr/sbin/userdel ${user}",
+  #      onlyif  => [ "/bin/grep ${user} /etc/passwd" ]
+  #    }
 
+  #    file { "/home/${user}":
+  #      ensure  => directory,
+  #      owner   => $user,
+  #      group   => $groups,
+  #      recurse => true,
+  #      require => Package['sssd'],
+  #    }
+  #  }
+  #}
+
+  #exec { "/usr/sbin/groupdel seges":
+  #  onlyif  => [ '/bin/grep seges /etc/group' ]
+  #}
+
+  #augeas { 'sudoseges':
+  #  context => '/files/etc/sudoers',
+  #  changes => [
+  #    'set spec[user = "%seges"]/user %seges',
+  #    'set spec[user = "%seges"]/host_group/host ALL',
+  #    'set spec[user = "%seges"]/host_group/command ALL',
+  #    'set spec[user = "%seges"]/host_group/command/runas_user ALL',
+  #    'set spec[user = "%seges"]/host_group/command/tag NOPASSWD',
+  #  ],
+  #}
 }

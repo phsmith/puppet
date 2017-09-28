@@ -1,4 +1,8 @@
-# DellOpenmanager puppet class
+# Class: seges::dellopenmanager
+# ===========================
+#
+# Class to manage Dell Openmanager installation and configuration
+#
 class seges::dellopenmanager {
 
   file { '/etc/yum.repos.d/dell-omsa-repository.repo':
@@ -16,14 +20,6 @@ class seges::dellopenmanager {
     ensure => 'installed',
   }
 
-  #package { 'invcol_WF06C_LN64_16.12.200.896_A00-16.12.200.896-WF06C.x86_64.rpm':
-  #  ensure          => installed,
-  #  provider        => 'rpm',
-  #  source          => "puppet:///modules/$module_name/$name",
-  #  install_options => '-Uvh',
-  #  require         =>  Package['dell-system-update']
-  #}
-
   exec { 'dsu -n &> /var/log/dell/dell-system-update.log':
     path   => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
     unless => 'test ! -f /var/log/dell/dell-system-update.log',
@@ -34,7 +30,7 @@ class seges::dellopenmanager {
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
-    source => "puppet:///modules/${module_name}/snmpd.conf"
+    source => "puppet:///modules/${module_name}/snmpd.conf",
   }
 
   service { ['snmpd', 'ipmi', 'dataeng']:
