@@ -1,0 +1,7 @@
+---
+seges::packages::packages_list:
+  - 'bind-utils'
+  - 'nc'
+  - 'nfs-utils'
+  - 'openssh-ldap'
+  - 'openssh-clients'

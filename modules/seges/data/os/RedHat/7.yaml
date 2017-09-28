@@ -1,0 +1,14 @@
+---
+seges::packages::packages_list: 
+  - 'chrony'
+
+seges::services::args:
+  ntp_package: 'chrony'
+  ntp_service: 'chronyd'
+  firewall_service: 'firewalld'
+  ensure_nslcd: running
+
+seges::configs::args:
+  ntp_service: 'chronyd'
+  ntp_file: '/etc/chrony.conf'
+  ntp_file_src: 'puppet:///modules/seges/chrony.ntp.conf'

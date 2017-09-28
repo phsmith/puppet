@@ -1,0 +1,14 @@
+---
+seges::packages::packages_list: 
+  - 'ntp'
+
+seges::services::args:
+  ntp_package: 'ntp'
+  ntp_service: 'ntpd'
+  firewall_service: 'iptables'
+  ensure_nslcd: stopped
+
+seges::configs::args:
+  ntp_service: 'ntpd'
+  ntp_file: '/etc/ntp.conf'
+  ntp_file_src: 'puppet:///modules/seges/ntp.conf'

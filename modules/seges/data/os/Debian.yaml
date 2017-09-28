@@ -1,0 +1,18 @@
+---
+seges::users::ensure: present
+
+seges::packages_list:
+    - 'netcat'
+    - 'nfs-common'
+    - 'ntp'
+    - 'openssh-client'
+
+seges::services::args:
+  firewall_service: undef
+  ntp_service: 'ntp'
+  ntp_package: 'ntp'
+
+seges::configs::args:
+  ntp_service: 'ntp'
+  ntp_file: '/etc/ntp.conf'
+  ntp_file_src: 'puppet:///modules/seges/ntp.conf'

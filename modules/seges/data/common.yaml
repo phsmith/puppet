@@ -1,0 +1,58 @@
+---
+seges::basic_install: true
+
+seges::users::ensure: absent
+seges::users::managehome: false
+seges::users::groups: 'seges'
+seges::users::login:
+  - 'p_6678'
+  - 'p_7007'
+  - 'p_7029'
+  - 'p_991118'
+  - 'p_991150'
+  - 'p_991266'
+  - 'p_999138'
+  - 'p_911179'
+
+### Packages vars ###
+seges::packages::install_options: []
+seges::packages::packages_list:
+  - 'at'
+  - 'bash-completion'
+  - 'git'
+  - 'htop'
+  - 'iotop'
+  - 'lftp'
+  - 'links'
+  - 'mlocate'
+  - 'vim'
+  - 'wget'
+  - 'zip'
+  - 'unzip'
+  - 'sssd'
+
+### Seges configs.pp parameters ###
+seges::configs::args:
+  ldap_service: 'sssd'
+  ldap_file: '/etc/sssd/sssd.conf'
+  ldap_file_src: 'puppet:///modules/seges/sssd.conf'
+  ldap_file_mode: '0600'
+
+### Fusioninventory vars ###
+seges::fusioninventory_agent_server: "http://corsa.redecamara.camara.gov.br/glpi/plugins/fusioninventory/"
+seges::fusioninventory_agent_tag: "SEGES"
+
+### Check_mk vars ###
+seges::check_mk_agent_version: "1.2.6p12"
+seges::check_mk_agent_plugins_source: "http://variante.redecamara.camara.gov.br/repositorio/nagios/check_mk/plugins/linux"
+seges::check_mk_agent_plugins: 
+  - "lvm"
+  - "mk_logins"
+
+lookup_options:
+  "^seges::packages::(.*)":
+    merge: unique
+  seges::users::login:
+    merge: unique
+  seges::configs::args:
+    merge: hash
